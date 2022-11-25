@@ -48,8 +48,8 @@ public class CombineUserAttributesPropertiesTextMapper extends AbstractSAMLProto
         property.setName(ProtocolMapperUtils.USER_ATTRIBUTE);
         property.setLabel(ProtocolMapperUtils.USER_MODEL_ATTRIBUTE_LABEL);
         property.setHelpText("Combine any text with user properties (email, federationLink, firstName, id, lastName, "
-        		+ "serviceAccountClientLink, or username) custom user attributes. Properties or attributes must be "
-        		+ "surrounded with backticks (`). To escape a backtick, use a backslash (\\). For example: "
+        		+ "serviceAccountClientLink, or username) and/or custom user attributes. Properties or attributes must "
+        		+ "be surrounded with backticks (`). To escape a backtick, use a backslash (\\). For example: "
         		+ "`username`-last:\\``lastName`\\`_`customAttribName`");
         configProperties.add(property);
         AttributeStatementHelper.setConfigProperties(configProperties);
