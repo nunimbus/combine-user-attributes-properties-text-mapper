@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<artifactId>keycloak-parent</artifactId>
+		<groupId>org.keycloak</groupId>
+		<version>20.0.1</version>
+	</parent>
+
+	<name>Combine User Attributes Properties and Text SAML Attribute Mapper</name>
+	<artifactId>saml-combine-user-attributes-properties-text-mapper</artifactId>
+	<packaging>jar</packaging>
+
+	<description>
+        Keycloak Combine User Attributes Properties Text Mapper
+    </description>
+
+	<properties>
+		<!-- build.outputDirectory>${project.basedir}/../../keycloak/release-17.0.1/providers</build.outputDirectory-->
+		<build.outputDirectory>${project.basedir}/target</build.outputDirectory>
+		<source.outputDirectory>${project.basedir}/target</source.outputDirectory>
+		<attach.sources.phase>none</attach.sources.phase>
+	</properties>
+
+	<repositories>
+	</repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.keycloak</groupId>
+			<artifactId>keycloak-server-spi</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.keycloak</groupId>
+			<artifactId>keycloak-server-spi-private</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.keycloak</groupId>
+			<artifactId>keycloak-services</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.keycloak</groupId>
+			<artifactId>keycloak-saml-core</artifactId>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<directory>${project.basedir}/target</directory>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<outputDirectory>${build.outputDirectory}</outputDirectory>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-source-plugin</artifactId>
+				<configuration>
+					<outputDirectory>${source.outputDirectory}</outputDirectory>
+					<!--finalName>filename-of-generated-jar-file</finalName -->
+					<attach>false</attach>
+				</configuration>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>${attach.sources.phase}</phase>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-shade-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
