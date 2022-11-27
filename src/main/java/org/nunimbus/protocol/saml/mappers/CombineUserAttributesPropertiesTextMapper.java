@@ -101,76 +101,80 @@ public class CombineUserAttributesPropertiesTextMapper extends AbstractSAMLProto
 
         char[] chars = value.toCharArray();
 
-        ArrayList<String> valueSplit = new ArrayList<String>();
-        valueSplit.add("");
+        ArrayList<String> valueParts = new ArrayList<String>();
+        valueParts.add("");
 
         boolean isAttr = false;
         
         for (int i = 0; i < value.length(); i++) {
-        	int last = valueSplit.size() - 1;
+        	int last = valueParts.size() - 1;
 
         	if (chars[i] == '`') {
         		if (i > 0 && chars[i - 1] == '\\') {
-        			String lastStr = valueSplit.get(last);
+        			String lastStr = valueParts.get(last);
         			char[] lastStrChars = lastStr.toCharArray();
         			lastStrChars[lastStr.length() - 1] = chars[i];        			
-        			valueSplit.set(last, new String(lastStrChars));
+        			valueParts.set(last, new String(lastStrChars));
         		}
         		else if (isAttr) {
-        			String attrName = valueSplit.get(last);
+        			String attrName = valueParts.get(last);
 
         			switch(attrName) {
         			  case "email":
-        				  valueSplit.set(last, user.getEmail());
+        				  valueParts.set(last, user.getEmail());
         				  break;
         			  case "federationLink":
-        				  valueSplit.set(last, user.getFederationLink());
+        				  valueParts.set(last, user.getFederationLink());
         				  break;
         			  case "firstName":
-        				  valueSplit.set(last, user.getFirstName());
+        				  valueParts.set(last, user.getFirstName());
         				  break;
         			  case "id":
-        				  valueSplit.set(last, user.getId());
+        				  valueParts.set(last, user.getId());
         				  break;
         			  case "lastName":
-        				  valueSplit.set(last, user.getLastName());
+        				  valueParts.set(last, user.getLastName());
         				  break;
         			  case "serviceAccountClientLink":
-        				  valueSplit.set(last, user.getServiceAccountClientLink());
+        				  valueParts.set(last, user.getServiceAccountClientLink());
         				  break;
         			  case "username":
-        				  valueSplit.set(last, user.getUsername());
+        				  valueParts.set(last, user.getUsername());
         				  break;
         			  default:
         				  if (user.getAttributes().get(attrName) != null) {
-        					  valueSplit.set(last, user.getAttributes().get(attrName).get(0));
+        					  valueParts.set(last, user.getAttributes().get(attrName).get(0));
         				  }
         				  else {
-        					  valueSplit.set(last, attrName);
+        					  valueParts.set(last, attrName);
         				  }
         				  break;
         			}
 
-        			valueSplit.add("");
+        			valueParts.add("");
         			isAttr = false;
         		}
         		else if (! isAttr) {
-        			valueSplit.add("");
+        			valueParts.add("");
         			isAttr = true;
         		}
         	}
         	else {
-        		valueSplit.set(last, valueSplit.get(last) + chars[i]);
+        		valueParts.set(last, valueParts.get(last) + chars[i]);
         	}
         }
 
         value = ""; 
 
-        for (int i = 0; i < valueSplit.size(); i++) {
-        	value = value + valueSplit.get(i);
+        for (int i = 0; i < valueParts.size(); i++) {
+        	value = value + valueParts.get(i);
         }
         
-        attributeValues.add(value);
+        String[] valueSplit = value.split(" ");
+        
+        for (int i = 0; i < valueSplit.length; i++) {
+            attributeValues.add(valueSplit[i]);        	
+        }
 
         if (attributeValues.isEmpty()) return;
         AttributeStatementHelper.addAttributes(attributeStatement, mappingModel, attributeValues);
